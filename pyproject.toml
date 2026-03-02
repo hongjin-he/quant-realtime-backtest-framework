@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lob-arena"
+version = "0.1.0"
+description = "LOB Simulator + Strategy Arena"
+authors = [{name = "Abstractor-bit", email = "your@email.com"}]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "sortedcontainers>=2.4.0",
+    "numba>=0.60",
+    "plotly>=5.20",
+    "typer>=0.12",
+    "numpy>=1.26",
+    "pandas>=2.2",
+]
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "black>=24.0", "mypy>=1.10"]
