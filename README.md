@@ -4,9 +4,12 @@
 
 **An ambitious attempt to build a global stock trading platform — and what it taught me about the gap between theory and reality.**
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://python.org)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
 [![Status](https://img.shields.io/badge/status-archived%20%2F%20educational-orange.svg)]()
+
+![Progress Demo](https://github.com/textualize/rich/raw/main/imgs/progress.gif)
+*This is what running a backtest feels like. The reality of what's happening underneath is considerably less clean.*
 
 </div>
 
@@ -16,74 +19,83 @@
 
 As a first-year university student with a background in quantitative reasoning and a deep interest in financial markets, I set out to build a **production-grade, real-time global stock trading platform** from scratch.
 
-The vision was ambitious:
+The vision:
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│               Global Trading Platform Architecture           │
-├─────────────────┬───────────────────┬───────────────────────┤
-│   Data Layer    │  Processing Layer │    Strategy Layer     │
-│                 │                   │                       │
-│ • Market feeds  │ • Real-time clean │ • Alpha generation    │
-│   (NYSE, HKEX,  │   & normalization │ • Risk management     │
-│   LSE, TSE...)  │ • Tick-to-bar     │ • Portfolio optim.    │
-│ • Order books   │ • Feature eng.    │ • Execution engine    │
-│ • Corp. events  │ • Anomaly detect  │ • Backtesting         │
-│ • Alt. data     │ • Storage (TB/day)│ • Live trading        │
-└─────────────────┴───────────────────┴───────────────────────┘
+```mermaid
+graph TD
+    A[Market Data Feeds<br/>NYSE · HKEX · LSE · TSE] --> B[Data Pipeline<br/>Clean · Normalize · Store]
+    B --> C[Feature Engine<br/>Alpha Factors · Signals]
+    C --> D[Strategy Layer<br/>GFlowNet Alphas · Risk Mgmt]
+    D --> E[Execution Engine<br/>Order Routing · Slippage]
+    E --> F[Portfolio<br/>Live P&L · Reporting]
+    F --> G[Retirement<br/>Just kidding]
+
+    style G fill:#ff6b6b,color:#fff
 ```
 
-The plan was to support **multi-market, multi-asset, real-time backtesting and strategy evaluation** — comparable to what Renaissance Technologies or Two Sigma run internally.
+Multi-market, multi-asset, real-time backtesting and strategy evaluation. Comparable to what Renaissance Technologies runs internally.
+
+I gave myself one semester.
 
 ---
 
-## Why It Failed
+## Why It Failed (The Honest Post-Mortem)
 
-I hit three walls, fast.
+### Wall #1 — Data is the actual business
 
-### 1. Data is the actual business
+Getting clean, normalized, survivorship-bias-free historical data for *one* market (let alone global) costs **tens of thousands of dollars per year**:
 
-Getting clean, normalized, survivorship-bias-free historical data for even one market (let alone global) costs **tens of thousands of dollars per year**. Refinitiv Tick History, Bloomberg Terminal, Nasdaq TotalView — none of these are student-budget friendly. Free alternatives (Yahoo Finance, Alpha Vantage) are riddled with gaps, errors, and rate limits.
+| Data Source | Annual Cost |
+|-------------|------------|
+| Refinitiv Tick History | ~$50K+ |
+| Bloomberg Terminal | ~$20K/seat |
+| Nasdaq TotalView | ~$10K+ |
+| Yahoo Finance (free) | Gaps everywhere, errors weekly |
 
-I spent more time cleaning dirty data than building anything useful.
+I spent more time cleaning Yahoo Finance data than building any actual infrastructure.
 
-### 2. The infrastructure cost is non-trivial
+### Wall #2 — Infrastructure at scale is a full-time job
 
-Processing tick-by-tick data for thousands of instruments across multiple exchanges generates **terabytes per day**. A proper pipeline needs:
-- Low-latency message brokers (Kafka)
-- Time-series databases (kdb+, InfluxDB, Arctic)
-- Distributed compute (Spark or custom C++)
-- Co-location or cloud infrastructure with sub-millisecond networking
+Processing tick data for thousands of instruments across multiple exchanges:
 
-The engineering complexity alone is a full-time job for a team of senior engineers.
+```mermaid
+graph LR
+    A[Tick Data<br/>TB per day] --> B[Kafka<br/>Message broker]
+    B --> C[kdb+ / Arctic<br/>Time-series DB]
+    C --> D[Spark / C++<br/>Distributed compute]
+    D --> E[Co-location<br/>Sub-ms networking]
+    E --> F[Your strategy<br/>finally runs]
 
-### 3. The knowledge gap between textbooks and production
+    style F fill:#4ecdc4,color:#fff
+```
 
-Every quantitative finance textbook teaches you Sharpe ratios, factor models, and Black-Scholes. None of them prepare you for:
-- Survivorship bias in your backtests
+This pipeline alone is a full-time job for a team of senior engineers. I had a laptop.
+
+### Wall #3 — The textbook-to-production gap
+
+Every quantitative finance textbook teaches you Sharpe ratios, factor models, and Black-Scholes. None prepare you for:
+
+- Survivorship bias making backtests look 40% better than reality
 - Transaction cost modeling that actually reflects market impact
-- Regime changes that invalidate your strategy parameters
-- The difference between a backtest that looks great and a strategy that makes money
-
-I learned more from this failure than from any lecture.
+- Regime changes that invalidate last year's strategy parameters
+- The difference between IC=0.15 in a backtest and IC=0.03 in production
 
 ---
 
-## What Got Built (Partial Implementation)
+## What Got Built
 
-The `lob_arena/` module contains a working **Limit Order Book simulator** — the one component I managed to complete before reality set in:
+The `lob_arena/` module — a working Limit Order Book simulator. The one component I managed to complete:
 
 ```
 lob_arena/
 ├── core/          # Order book matching engine
-├── strategies/    # Basic strategy implementations (MM, momentum)
+├── strategies/    # Basic MM and momentum strategies
 ├── analytics/     # PnL, Sharpe, spread capture metrics
-├── data/          # Data ingestion stubs (Binance tick data)
-└── viz/           # Plotly-based replay visualization
+├── data/          # Binance tick data ingestion stubs
+└── viz/           # Plotly replay visualization
 ```
 
 ```bash
-# The one thing that actually works:
 pip install -e .
 python -m lob_arena.cli battle --strategies mm,momentum --steps 10000
 ```
@@ -92,30 +104,27 @@ python -m lob_arena.cli battle --strategies mm,momentum --steps 10000
 
 ## What I Learned
 
-> **The gap between knowing finance and building finance infrastructure is enormous — and most of that gap is filled with money, time, and engineering headcount that a first-year student simply does not have.**
+> The gap between knowing finance and building finance infrastructure is enormous — and most of that gap is filled with money, time, and engineering headcount that a first-year student simply does not have.
 
-Specific takeaways:
-
-- **Data quality is 80% of the problem.** No model survives contact with real, dirty market data.
-- **Backtesting is easier than it looks, and harder than it seems.** Overfitting to history is trivially easy.
-- **Start smaller.** A robust single-strategy, single-asset backtester is more valuable than a broken multi-market platform.
-- **Institutional quant infrastructure took decades to build.** Trying to replicate it solo in a semester was never realistic.
+1. **Data quality is 80% of the problem.** No model survives contact with real, dirty market data.
+2. **Backtesting is easier than it looks, and harder than it seems.** Overfitting to history is trivially easy.
+3. **Start smaller.** A robust single-strategy, single-asset backtester > a broken multi-market platform.
+4. **Institutional infrastructure took decades to build.** Replicating it solo in a semester was never realistic.
 
 ---
 
 ## What Comes Next
 
-This project is archived. The lessons from it directly informed:
-- [`GFlowNet-Alpha-Mining`](https://github.com/hongjin-he/GFlowNet-Alpha-Mining) — a more focused, theory-grounded approach to alpha generation
-- [`mathmatical-framework-for-world-models-in-quant-finance`](https://github.com/hongjin-he/mathmatical-framework-for-world-models-in-quant-finance) — the mathematical foundations I wish I had before starting this
+This project is archived. The lessons directly informed:
+
+- [GFlowNet-Alpha-Mining](https://github.com/hongjin-he/GFlowNet-Alpha-Mining) — focused, theory-grounded approach to alpha generation
+- [mathmatical-framework-for-world-models-in-quant-finance](https://github.com/hongjin-he/mathmatical-framework-for-world-models-in-quant-finance) — the mathematical foundations I wish I had before starting this
 
 ---
 
 ## For Anyone Who Finds This
 
-If you're a student who also tried to build something too big and ran into the same walls — you're not alone. The failure is the education.
-
-Feel free to use the LOB simulator code for your own learning. It actually works.
+If you're a student who tried to build something too big and ran into the same walls — you're not alone. The LOB simulator code works. Use it.
 
 ---
 
