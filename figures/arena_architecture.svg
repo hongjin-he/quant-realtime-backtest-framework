@@ -1,0 +1,141 @@
+<svg viewBox="0 0 920 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#4A90D9"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#48BB78"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#F6AD55"/>
+    </marker>
+    <marker id="arr-gray" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#718096"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1,1 L7,4 L1,7 Z" fill="#E85D5D"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="560" fill="#FAFBFC" rx="8"/>
+
+  <!-- Title -->
+  <text x="460" y="34" text-anchor="middle" font-size="16" font-weight="600" fill="#1A202C">LOB Arena: Multi-Strategy Competition Architecture</text>
+  <text x="460" y="52" text-anchor="middle" font-size="11" fill="#718096">Discrete-event simulation · Price-time priority · Agent-based competition · Stochastic market generation</text>
+  <line x1="50" y1="62" x2="870" y2="62" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ====== MARKET DATA SOURCE ====== -->
+  <rect x="50" y="76" width="200" height="80" rx="6" fill="#F7FAFC" stroke="#CBD5E0" stroke-width="1.5"/>
+  <text x="150" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#4A5568">SYNTHETIC MARKET</text>
+  <text x="150" y="112" text-anchor="middle" font-size="9.5" fill="#718096">dS = μ dt + σ dW_t</text>
+  <text x="150" y="126" text-anchor="middle" font-size="9.5" fill="#718096">+ J dN_t (jump noise)</text>
+  <text x="150" y="141" text-anchor="middle" font-size="9" fill="#A0AEC0">generate_synthetic_tick()</text>
+
+  <!-- REAL DATA SOURCE -->
+  <rect x="50" y="168" width="200" height="56" rx="6" fill="#F7FAFC" stroke="#CBD5E0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="150" y="188" text-anchor="middle" font-size="11" font-weight="500" fill="#718096">BINANCE DATA</text>
+  <text x="150" y="204" text-anchor="middle" font-size="9.5" fill="#A0AEC0">BinanceLoader (stub)</text>
+  <text x="150" y="216" text-anchor="middle" font-size="9" fill="#CBD5E0">not yet implemented</text>
+
+  <!-- Arrow from market to arena -->
+  <line x1="250" y1="116" x2="330" y2="116" stroke="#4A90D9" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+  <!-- ====== LIMIT ORDER BOOK ====== (center-left) -->
+  <rect x="330" y="76" width="190" height="148" rx="6" fill="#EBF8FF" stroke="#4A90D9" stroke-width="2"/>
+  <text x="425" y="96" text-anchor="middle" font-size="11" font-weight="700" fill="#2B6CB0">LIMIT ORDER BOOK</text>
+  <line x1="340" y1="102" x2="510" y2="102" stroke="#BEE3F8" stroke-width="1"/>
+  <text x="345" y="116" font-size="9.5" fill="#4A5568">bids: SortedDict(λp. −p)</text>
+  <text x="345" y="130" font-size="9.5" fill="#4A5568">asks: SortedDict()</text>
+  <text x="345" y="145" font-size="9.5" fill="#4A5568">orders: Dict[id → Order]</text>
+  <line x1="340" y1="152" x2="510" y2="152" stroke="#BEE3F8" stroke-width="1"/>
+  <text x="345" y="165" font-size="9" fill="#2C5282">submit_limit_order()</text>
+  <text x="345" y="179" font-size="9" fill="#2C5282">submit_market_order()</text>
+  <text x="345" y="193" font-size="9" fill="#2C5282">cancel_order()  ·  get_depth()</text>
+  <text x="345" y="207" font-size="9" fill="#2C5282">best_bid  ·  best_ask  ·  spread</text>
+
+  <!-- ====== ARENA ENGINE ====== (center) -->
+  <rect x="350" y="252" width="150" height="88" rx="6" fill="#1A202C" stroke="#4A5568" stroke-width="1.5"/>
+  <text x="425" y="272" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">ARENA</text>
+  <text x="425" y="287" text-anchor="middle" font-size="9" fill="#A0AEC0">run_synthetic(steps)</text>
+  <text x="425" y="301" text-anchor="middle" font-size="9" fill="#A0AEC0">_execute_actions()</text>
+  <text x="425" y="315" text-anchor="middle" font-size="9" fill="#68D391">get_results() → Dict</text>
+  <text x="425" y="330" text-anchor="middle" font-size="9" fill="#68D391">print_leaderboard()</text>
+
+  <!-- Arrow LOB → Arena -->
+  <line x1="425" y1="224" x2="425" y2="252" stroke="#4A90D9" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text x="432" y="242" font-size="8.5" fill="#4A90D9">tick update</text>
+
+  <!-- ====== STRATEGIES ====== (right side) -->
+  <text x="620" y="88" text-anchor="middle" font-size="12" font-weight="600" fill="#2D3748">STRATEGY AGENTS</text>
+  <text x="620" y="103" text-anchor="middle" font-size="9.5" fill="#718096">BaseStrategy (abstract)</text>
+
+  <!-- Strategy 1: Market Maker -->
+  <rect x="530" y="114" width="175" height="70" rx="5" fill="#F0FFF4" stroke="#48BB78" stroke-width="1.5"/>
+  <text x="617" y="132" text-anchor="middle" font-size="10" font-weight="600" fill="#276749">Market Maker</text>
+  <text x="617" y="147" text-anchor="middle" font-size="9" fill="#4A5568">Quote bid−δ, ask+δ around mid</text>
+  <text x="617" y="160" text-anchor="middle" font-size="9" fill="#4A5568">Capture spread; manage inventory</text>
+  <text x="617" y="175" text-anchor="middle" font-size="9" fill="#A0AEC0">market_maker.py (stub)</text>
+
+  <!-- Strategy 2: Momentum -->
+  <rect x="530" y="194" width="175" height="58" rx="5" fill="#FAF5FF" stroke="#9F7AEA" stroke-width="1.5"/>
+  <text x="617" y="212" text-anchor="middle" font-size="10" font-weight="600" fill="#553C9A">Momentum</text>
+  <text x="617" y="227" text-anchor="middle" font-size="9" fill="#4A5568">Buy on up-tick; sell on down-tick</text>
+  <text x="617" y="242" text-anchor="middle" font-size="9" fill="#A0AEC0">trend-following signal</text>
+
+  <!-- Strategy 3: Dummy -->
+  <rect x="530" y="262" width="175" height="46" rx="5" fill="#F7FAFC" stroke="#CBD5E0" stroke-width="1"/>
+  <text x="617" y="280" text-anchor="middle" font-size="10" font-weight="500" fill="#4A5568">DummyStrategy</text>
+  <text x="617" y="295" text-anchor="middle" font-size="9" fill="#718096">Baseline · random actions</text>
+
+  <!-- Strategy N -->
+  <rect x="530" y="318" width="175" height="36" rx="5" fill="#F7FAFC" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="617" y="338" text-anchor="middle" font-size="9.5" fill="#A0AEC0">Custom Strategy (plug-in)</text>
+  <text x="617" y="350" text-anchor="middle" font-size="8.5" fill="#CBD5E0">Implement BaseStrategy ABC</text>
+
+  <!-- Arrows between Arena and Strategies -->
+  <!-- Arena → Strategies: orderbook update -->
+  <line x1="500" y1="275" x2="530" y2="149" stroke="#4A90D9" stroke-width="1.2" marker-end="url(#arr-blue)"/>
+  <line x1="500" y1="279" x2="530" y2="223" stroke="#4A90D9" stroke-width="1.2" marker-end="url(#arr-blue)"/>
+  <line x1="500" y1="283" x2="530" y2="285" stroke="#4A90D9" stroke-width="1.2" marker-end="url(#arr-blue)"/>
+  <text x="505" y="220" font-size="8" fill="#4A90D9">on_orderbook_update(ob, t)</text>
+
+  <!-- Strategies → Arena: actions -->
+  <line x1="530" y1="155" x2="500" y2="270" stroke="#48BB78" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr-green)"/>
+  <line x1="530" y1="227" x2="500" y2="277" stroke="#9F7AEA" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr-gray)"/>
+  <text x="482" y="248" font-size="8" fill="#48BB78">→ actions</text>
+
+  <!-- ====== FILL EVENTS ====== -->
+  <line x1="425" y1="340" x2="425" y2="376" stroke="#F6AD55" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+  <text x="432" y="362" font-size="8.5" fill="#F6AD55">Fill events</text>
+
+  <!-- ====== METRICS ====== (bottom center) -->
+  <rect x="310" y="376" width="230" height="80" rx="6" fill="#FFFFF0" stroke="#F6AD55" stroke-width="1.5"/>
+  <text x="425" y="396" text-anchor="middle" font-size="11" font-weight="600" fill="#975A16">ANALYTICS LAYER</text>
+  <line x1="320" y1="402" x2="530" y2="402" stroke="#FEF3C7" stroke-width="1"/>
+  <text x="325" y="416" font-size="9" fill="#92400E">PnL = Σ fill_price × qty × side</text>
+  <text x="325" y="430" font-size="9" fill="#92400E">Sharpe = μ_ret / σ_ret × √252</text>
+  <text x="325" y="444" font-size="9" fill="#92400E">Inventory · Spread Capture · Win Rate</text>
+
+  <!-- ====== LEADERBOARD ====== (bottom right) -->
+  <rect x="580" y="376" width="220" height="80" rx="6" fill="#1A202C" stroke="#2D3748" stroke-width="1.5"/>
+  <text x="690" y="396" text-anchor="middle" font-size="11" font-weight="600" fill="#FFFFFF">LEADERBOARD</text>
+  <line x1="590" y1="402" x2="790" y2="402" stroke="#4A5568" stroke-width="1"/>
+  <text x="595" y="416" font-size="9" fill="#68D391">1. Market Maker    +$1,247</text>
+  <text x="595" y="430" font-size="9" fill="#A0AEC0">2. Momentum         +$834</text>
+  <text x="595" y="444" font-size="9" fill="#718096">3. Dummy              −$23</text>
+
+  <line x1="540" y1="416" x2="580" y2="416" stroke="#F6AD55" stroke-width="1" marker-end="url(#arr-orange)"/>
+
+  <!-- ====== SIMULATION LOOP ====== (bottom, spanning) -->
+  <rect x="50" y="474" width="820" height="68" rx="6" fill="#F7FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="460" y="492" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4A5568">Simulation Loop: for t in range(steps)</text>
+  <text x="460" y="508" text-anchor="middle" font-size="9.5" fill="#718096">① generate price tick → ② update LOB → ③ broadcast to all strategies → ④ collect actions → ⑤ execute orders → ⑥ record fills</text>
+  <text x="460" y="524" text-anchor="middle" font-size="9" fill="#A0AEC0">Deterministic replay: seed controls RNG → reproducible results across runs · Complexity: O(S · K · log N) per step</text>
+  <text x="460" y="538" text-anchor="middle" font-size="9" fill="#A0AEC0">S = steps, K = strategies, N = active price levels in LOB</text>
+
+  <!-- small tick labels on strategies side -->
+  <text x="715" y="148" font-size="8.5" fill="#276749">on_fill(Fill)</text>
+  <text x="715" y="160" font-size="8.5" fill="#276749">on_end(final_price)</text>
+  <text x="715" y="226" font-size="8.5" fill="#553C9A">on_fill(Fill)</text>
+</svg>

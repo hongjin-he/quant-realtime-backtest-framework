@@ -1,0 +1,170 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="520" fill="#FAFBFC" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="16" font-weight="600" fill="#1A202C">Limit Order Book Architecture</text>
+  <text x="450" y="54" text-anchor="middle" font-size="11" fill="#718096">Price-time priority matching engine with O(log n) insertion and O(1) best-price lookup</text>
+  <line x1="60" y1="66" x2="840" y2="66" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- BID SIDE HEADER -->
+  <text x="215" y="92" text-anchor="middle" font-size="13" font-weight="600" fill="#2D3748">BID SIDE</text>
+  <text x="215" y="107" text-anchor="middle" font-size="10" fill="#4A90D9">SortedDict (descending price)</text>
+
+  <!-- ASK SIDE HEADER -->
+  <text x="685" y="92" text-anchor="middle" font-size="13" font-weight="600" fill="#2D3748">ASK SIDE</text>
+  <text x="685" y="107" text-anchor="middle" font-size="10" fill="#E85D5D">SortedDict (ascending price)</text>
+
+  <!-- SPREAD indicator in center -->
+  <rect x="380" y="78" width="140" height="38" rx="4" fill="#FFFBF0" stroke="#F6AD55" stroke-width="1.5"/>
+  <text x="450" y="94" text-anchor="middle" font-size="10" font-weight="600" fill="#D69E2E">SPREAD</text>
+  <text x="450" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#B7791F">ask − bid = δ</text>
+
+  <!-- BID levels -->
+  <!-- Level 1 (best bid) -->
+  <rect x="60" y="124" width="310" height="46" rx="4" fill="#EBF8FF" stroke="#4A90D9" stroke-width="2"/>
+  <text x="75" y="144" font-size="10" fill="#2C5282" font-weight="600">BEST BID</text>
+  <text x="75" y="160" font-size="13" font-weight="700" fill="#2B6CB0">$99.97</text>
+  <text x="290" y="144" text-anchor="end" font-size="10" fill="#4A5568">qty: 45</text>
+  <text x="290" y="160" text-anchor="end" font-size="10" fill="#718096">3 orders</text>
+  <!-- Queue visualization -->
+  <rect x="300" y="134" width="10" height="12" rx="2" fill="#4A90D9" opacity="0.9"/>
+  <rect x="313" y="134" width="10" height="12" rx="2" fill="#4A90D9" opacity="0.65"/>
+  <rect x="326" y="134" width="10" height="12" rx="2" fill="#4A90D9" opacity="0.4"/>
+  <rect x="300" y="150" width="10" height="6" rx="1" fill="#BEE3F8"/>
+  <rect x="313" y="150" width="10" height="6" rx="1" fill="#BEE3F8"/>
+  <rect x="326" y="150" width="10" height="6" rx="1" fill="#BEE3F8"/>
+
+  <!-- Level 2 -->
+  <rect x="60" y="176" width="310" height="40" rx="4" fill="#F0F7FF" stroke="#63B3ED" stroke-width="1.5"/>
+  <text x="75" y="193" font-size="10" fill="#2C5282">$99.95</text>
+  <text x="290" y="193" text-anchor="end" font-size="10" fill="#4A5568">qty: 120</text>
+  <text x="75" y="209" font-size="10" fill="#718096">5 orders</text>
+  <rect x="300" y="183" width="10" height="10" rx="2" fill="#63B3ED" opacity="0.9"/>
+  <rect x="313" y="183" width="10" height="10" rx="2" fill="#63B3ED" opacity="0.75"/>
+  <rect x="326" y="183" width="10" height="10" rx="2" fill="#63B3ED" opacity="0.6"/>
+  <rect x="339" y="183" width="10" height="10" rx="2" fill="#63B3ED" opacity="0.45"/>
+  <rect x="352" y="183" width="10" height="10" rx="2" fill="#63B3ED" opacity="0.3"/>
+
+  <!-- Level 3 -->
+  <rect x="60" y="222" width="310" height="36" rx="4" fill="#F7FAFF" stroke="#90CDF4" stroke-width="1"/>
+  <text x="75" y="238" font-size="10" fill="#4A5568">$99.90</text>
+  <text x="290" y="238" text-anchor="end" font-size="10" fill="#718096">qty: 200</text>
+  <text x="75" y="251" font-size="10" fill="#A0AEC0">8 orders</text>
+
+  <!-- Level 4 -->
+  <rect x="60" y="264" width="310" height="34" rx="4" fill="#F7FAFF" stroke="#BEE3F8" stroke-width="1"/>
+  <text x="75" y="280" font-size="10" fill="#718096">$99.85</text>
+  <text x="290" y="280" text-anchor="end" font-size="10" fill="#A0AEC0">qty: 310</text>
+  <text x="75" y="293" font-size="10" fill="#A0AEC0">12 orders</text>
+
+  <!-- Level 5 -->
+  <rect x="60" y="304" width="310" height="34" rx="4" fill="#F7FAFF" stroke="#EBF8FF" stroke-width="1"/>
+  <text x="75" y="320" font-size="10" fill="#A0AEC0">$99.80</text>
+  <text x="290" y="320" text-anchor="end" font-size="10" fill="#CBD5E0">qty: 450</text>
+
+  <!-- Fade indicator for more levels -->
+  <text x="215" y="355" text-anchor="middle" font-size="10" fill="#A0AEC0">⋮  deeper levels  ⋮</text>
+
+  <!-- ASK levels -->
+  <!-- Level 1 (best ask) -->
+  <rect x="530" y="124" width="310" height="46" rx="4" fill="#FFF5F5" stroke="#E85D5D" stroke-width="2"/>
+  <text x="545" y="144" font-size="10" fill="#742A2A" font-weight="600">BEST ASK</text>
+  <text x="545" y="160" font-size="13" font-weight="700" fill="#C53030">$100.01</text>
+  <text x="820" y="144" text-anchor="end" font-size="10" fill="#4A5568">qty: 30</text>
+  <text x="820" y="160" text-anchor="end" font-size="10" fill="#718096">2 orders</text>
+  <rect x="720" y="134" width="10" height="12" rx="2" fill="#E85D5D" opacity="0.9"/>
+  <rect x="733" y="134" width="10" height="12" rx="2" fill="#E85D5D" opacity="0.55"/>
+  <rect x="720" y="150" width="10" height="6" rx="1" fill="#FED7D7"/>
+  <rect x="733" y="150" width="10" height="6" rx="1" fill="#FED7D7"/>
+
+  <!-- Level 2 -->
+  <rect x="530" y="176" width="310" height="40" rx="4" fill="#FFF8F8" stroke="#FC8181" stroke-width="1.5"/>
+  <text x="545" y="193" font-size="10" fill="#742A2A">$100.05</text>
+  <text x="820" y="193" text-anchor="end" font-size="10" fill="#4A5568">qty: 85</text>
+  <text x="545" y="209" font-size="10" fill="#718096">4 orders</text>
+  <rect x="720" y="183" width="10" height="10" rx="2" fill="#FC8181" opacity="0.9"/>
+  <rect x="733" y="183" width="10" height="10" rx="2" fill="#FC8181" opacity="0.7"/>
+  <rect x="746" y="183" width="10" height="10" rx="2" fill="#FC8181" opacity="0.5"/>
+  <rect x="759" y="183" width="10" height="10" rx="2" fill="#FC8181" opacity="0.3"/>
+
+  <!-- Level 3 -->
+  <rect x="530" y="222" width="310" height="36" rx="4" fill="#FFFAFA" stroke="#FEB2B2" stroke-width="1"/>
+  <text x="545" y="238" font-size="10" fill="#718096">$100.10</text>
+  <text x="820" y="238" text-anchor="end" font-size="10" fill="#718096">qty: 150</text>
+  <text x="545" y="251" font-size="10" fill="#A0AEC0">6 orders</text>
+
+  <!-- Level 4 -->
+  <rect x="530" y="264" width="310" height="34" rx="4" fill="#FFFAFA" stroke="#FED7D7" stroke-width="1"/>
+  <text x="545" y="280" font-size="10" fill="#A0AEC0">$100.15</text>
+  <text x="820" y="280" text-anchor="end" font-size="10" fill="#A0AEC0">qty: 220</text>
+
+  <!-- Level 5 -->
+  <rect x="530" y="304" width="310" height="34" rx="4" fill="#FFFAFA" stroke="#FFF5F5" stroke-width="1"/>
+  <text x="545" y="320" font-size="10" fill="#CBD5E0">$100.20</text>
+  <text x="820" y="320" text-anchor="end" font-size="10" fill="#CBD5E0">qty: 380</text>
+  <text x="685" y="355" text-anchor="middle" font-size="10" fill="#A0AEC0">⋮  deeper levels  ⋮</text>
+
+  <!-- Spread arrow -->
+  <line x1="370" y1="147" x2="390" y2="147" stroke="#D69E2E" stroke-width="1.5" marker-end="url(#arrow-gold)"/>
+  <line x1="510" y1="147" x2="530" y2="147" stroke="#D69E2E" stroke-width="1.5"/>
+
+  <!-- Matching Engine Box -->
+  <rect x="340" y="380" width="220" height="70" rx="6" fill="#1A202C" stroke="#2D3748" stroke-width="1.5"/>
+  <text x="450" y="402" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">MATCHING ENGINE</text>
+  <text x="450" y="418" text-anchor="middle" font-size="9.5" fill="#A0AEC0">Price-time priority</text>
+  <text x="450" y="432" text-anchor="middle" font-size="9.5" fill="#A0AEC0">O(log n) insert  ·  O(1) best-price</text>
+  <text x="450" y="446" text-anchor="middle" font-size="9.5" fill="#68D391">Itô isometry: 𝔼[‖∫σdW‖²] = 𝔼[∫‖σ‖²dt]</text>
+
+  <!-- Arrows from LOB to matching engine -->
+  <line x1="215" y1="345" x2="380" y2="395" stroke="#4A90D9" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="685" y1="345" x2="520" y2="395" stroke="#E85D5D" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- Order input boxes -->
+  <rect x="60" y="390" width="120" height="36" rx="4" fill="#EBF8FF" stroke="#4A90D9" stroke-width="1.5"/>
+  <text x="120" y="406" text-anchor="middle" font-size="10" font-weight="600" fill="#2C5282">LIMIT ORDER</text>
+  <text x="120" y="420" text-anchor="middle" font-size="9" fill="#4A5568">submit_limit_order()</text>
+
+  <rect x="200" y="390" width="120" height="36" rx="4" fill="#F0FFF4" stroke="#48BB78" stroke-width="1.5"/>
+  <text x="260" y="406" text-anchor="middle" font-size="10" font-weight="600" fill="#276749">MARKET ORDER</text>
+  <text x="260" y="420" text-anchor="middle" font-size="9" fill="#4A5568">submit_market_order()</text>
+
+  <!-- Fill output -->
+  <rect x="620" y="390" width="120" height="36" rx="4" fill="#FFFFF0" stroke="#F6AD55" stroke-width="1.5"/>
+  <text x="680" y="406" text-anchor="middle" font-size="10" font-weight="600" fill="#975A16">FILL EVENT</text>
+  <text x="680" y="420" text-anchor="middle" font-size="9" fill="#4A5568">Fill(price, qty, ids)</text>
+
+  <rect x="760" y="390" width="120" height="36" rx="4" fill="#FAF5FF" stroke="#9F7AEA" stroke-width="1.5"/>
+  <text x="820" y="406" text-anchor="middle" font-size="10" font-weight="600" fill="#553C9A">CANCEL</text>
+  <text x="820" y="420" text-anchor="middle" font-size="9" fill="#4A5568">cancel_order(id)</text>
+
+  <!-- Arrows from input to engine -->
+  <line x1="180" y1="400" x2="340" y2="410" stroke="#4A90D9" stroke-width="1.2"/>
+  <line x1="320" y1="400" x2="342" y2="412" stroke="#48BB78" stroke-width="1.2"/>
+  <!-- Arrows from engine to output -->
+  <line x1="560" y1="410" x2="620" y2="407" stroke="#F6AD55" stroke-width="1.2"/>
+  <line x1="560" y1="415" x2="760" y2="412" stroke="#9F7AEA" stroke-width="1.2"/>
+
+  <!-- Order queue legend -->
+  <rect x="60" y="462" width="300" height="44" rx="4" fill="#F7FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="75" y="477" font-size="9.5" fill="#4A5568" font-weight="600">Order Queue Structure (per price level):</text>
+  <text x="75" y="492" font-size="9" fill="#718096">FIFO list of Order objects</text>
+  <rect x="240" y="468" width="12" height="12" rx="2" fill="#4A90D9" opacity="0.9"/>
+  <rect x="256" y="468" width="12" height="12" rx="2" fill="#4A90D9" opacity="0.65"/>
+  <rect x="272" y="468" width="12" height="12" rx="2" fill="#4A90D9" opacity="0.4"/>
+  <rect x="290" y="468" width="12" height="12" rx="2" fill="#4A90D9" opacity="0.2"/>
+  <text x="245" y="492" font-size="9" fill="#A0AEC0">← time priority →</text>
+  <text x="356" y="477" font-size="9" fill="#A0AEC0">older → newer</text>
+
+  <!-- Complexity legend -->
+  <rect x="540" y="462" width="300" height="44" rx="4" fill="#F7FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="555" y="477" font-size="9.5" fill="#4A5568" font-weight="600">Complexity:</text>
+  <text x="555" y="492" font-size="9" fill="#718096">submit_limit: O(log n)  ·  best_bid/ask: O(1)  ·  cancel: O(log n)</text>
+
+  <!-- Arrow defs -->
+  <defs>
+    <marker id="arrow-gold" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#D69E2E"/>
+    </marker>
+  </defs>
+</svg>
